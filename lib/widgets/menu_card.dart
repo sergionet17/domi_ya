@@ -1,4 +1,3 @@
-// widgets/menu_card.dart
 import 'package:flutter/material.dart';
 import 'package:menu_app_flutter/models/menu.dart';
 
@@ -9,27 +8,24 @@ class MenuCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 4,
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      child: ListTile(
-        leading: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Image.network(
-            menu.imageUrl,
-            width: 60,
-            height: 60,
-            fit: BoxFit.cover,
-          ),
+    return ListTile(
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Image.network(
+          menu.imageUrl,
+          width: 60,
+          height: 60,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return const Icon(Icons.image_not_supported, size: 60, color: Colors.grey);
+          },
         ),
-        title: Text(menu.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(menu.description),
-        trailing: Text('\$${menu.price}',
-            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.orange)),
-        onTap: () {
-          // Navegar a la pantalla de detalles (pendiente de agregar)
-        },
+      ),
+      title: Text(menu.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+      subtitle: Text(menu.description),
+      trailing: Text(
+        '\$${menu.price}',
+        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.orange),
       ),
     );
   }

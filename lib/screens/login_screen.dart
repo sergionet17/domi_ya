@@ -1,10 +1,15 @@
-
-// screens/login_screen.dart
 import 'package:flutter/material.dart';
-import 'package:menu_app_flutter/screens/home_screen.dart';
+import 'package:menu_app_flutter/screens/profile_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+
+  void _goToProfileScreen(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const ProfileScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,29 +26,9 @@ class LoginScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.orange),
               ),
-              const SizedBox(height: 20),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Correo Electrónico',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Contraseña',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-              ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 50),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomeScreen()),
-                  );
-                },
+                onPressed: () => _goToProfileScreen(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange,
                   padding: const EdgeInsets.symmetric(vertical: 15),
