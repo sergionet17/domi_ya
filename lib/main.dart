@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:menu_app_flutter/screens/login_screen.dart';
+import 'package:menu_app_flutter/services/menu_service.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -8,6 +9,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // 🔥 Ejecutar la función para agregar almuerzos
+  final menuService = MenuService();
+  await menuService.addMenus(); // ⚠️ Solo ejecutar una vez
 
   runApp(const MyApp());
 }

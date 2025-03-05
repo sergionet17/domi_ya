@@ -13,7 +13,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   String? _activityLevel;
-  double _caloricNeeds = 0.0;
+  double _dailyCaloricNeeds = 0.0;
   bool _isButtonEnabled = false;
 
   final List<String> activityLevels = [
@@ -24,13 +24,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     "Muy Activo (entrenamiento intenso)"
   ];
 
+  final Map<String, double> activityMultipliers = {
+    "Sedentario": 1.2,
+    "Ligero (ejercicio 1-3 días)": 1.375,
+    "Moderado (ejercicio 4-5 días)": 1.55,
+    "Activo (ejercicio 6-7 días)": 1.725,
+    "Muy Activo (entrenamiento intenso)": 1.9,
+  };
+
   void _validateInputs() {
     setState(() {
       _isButtonEnabled = _ageController.text.isNotEmpty &&
           _weightController.text.isNotEmpty &&
           _heightController.text.isNotEmpty &&
           _activityLevel != null &&
-          _caloricNeeds > 0;
+          _dailyCaloricNeeds > 0;
     });
   }
 
@@ -44,16 +52,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       double height = double.parse(_heightController.text);
 
       double bmr = 10 * weight + 6.25 * height - 5 * age + 5;
-      double multiplier = {
-        "Sedentario": 1.2,
-        "Ligero (ejercicio 1-3 días)": 1.375,
-        "Moderado (ejercicio 4-5 días)": 1.55,
-        "Activo (ejercicio 6-7 días)": 1.725,
-        "Muy Activo (entrenamiento intenso)": 1.9,
-      }[_activityLevel] ?? 1.2;
+      double multiplier = activityMultipliers[_activityLevel] ?? 1.2;
 
       setState(() {
-        _caloricNeeds = bmr * multiplier;
+        _dailyCaloricNeeds = bmr * multiplier;
         _validateInputs();
       });
     }
@@ -73,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => HomeScreen(caloricNeeds: _caloricNeeds),
+        builder: (context) => HomeScreen(caloricNeeds: _dailyCaloricNeeds),
       ),
     );
   }
@@ -124,10 +126,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _calculateCalories,
-              child: const Text("Calcular Calorías"),
+              child: const Text("Calcular Requerimiento Calórico Diario"),
             ),
-            if (_caloricNeeds > 0)
-              Text("Requerimiento calórico: ${_caloricNeeds.toStringAsFixed(0)} kcal"),
+            if (_dailyCaloricNeeds > 0)
+              Text("Requerimiento calórico diario: ${_dailyCaloricNeeds.toStringAsFixed(0)} kcal"),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _isButtonEnabled ? _goToHomeScreen : null,
